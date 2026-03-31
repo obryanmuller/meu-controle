@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <title>Fluxo | Gestão Premium</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --bg: #F2F2F7;
+            --card: #FFFFFF;
+            --primary: #000000;
+            --accent: #007AFF;
+            --va: #34C759;
+            --reserve: #1C1C1E; /* Cinza quase preto para a reserva */
+            --danger-soft: #FF453A20; /* Vermelho suave para fundo */
+            --danger-text: #FF453A;
+            --text-main: #1C1C1E;
+            --text-sub: #8E8E93;
+            --border: #D1D1D6;
+            --radius-lg: 28px;
+            --radius-md: 20px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg); 
+            color: var(--text-main); 
+            padding-bottom: 140px; 
+            -webkit-font-smoothing: antialiased; 
+        }
+
+        .container { max-width: 450px; margin: 0 auto; padding: 24px; }
+
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 24px; 
+            padding-top: env(safe-area-inset-top); 
+        }
+        .header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -1.5px; }
+        .logo-img { width: 40px; height: 40px; border-radius: 12px; object-fit: cover; border: 1px solid var(--border); }
+
+        /* MAIN CARD */
+        .main-card { 
+            background: var(--primary); 
+            color: white; 
+            padding: 32px; 
+            border-radius: var(--radius-lg); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
+            margin-bottom: 16px; 
+            position: relative;
+        }
+        .main-card span { font-size: 0.75rem; font-weight: 700; opacity: 0.5; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 8px; }
+        .main-card h2 { font-size: 2.8rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 24px; }
+        
+        .sub-info { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .sub-info div p { font-weight: 700; font-size: 1.1rem; }
+
+        /* BADGE EMERGÊNCIA */
+        .badge-alert { 
+            background: var(--danger-soft); 
+            color: var(--danger-text); 
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            font-size: 0.65rem; 
+            font-weight: 800; 
+            position: absolute;
+            top: 32px;
+            right: 32px;
+            letter-spacing: 0.5px;
+        }
+
+        /* RESERVE CARD - DARK VAULT */
+        .reserve-mini-card { 
+            background: var(--reserve); 
+            color: white; 
+            padding: 24px; 
+            border-radius: var(--radius-md); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 32px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+        }
+        .reserve-mini-card div span { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; opacity: 0.5; letter-spacing: 1px; }
+        .reserve-mini-card div h3 { font-size: 1.5rem; font-weight: 800; margin-top: 4px; }
+        .reserve-icon-bg { background: rgba(255,255,255,0.1); padding: 10px; border-radius: 12px; }
+
+        .section-title { font-size: 0.85rem; font-weight: 800; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin: 40px 0 16px 4px; display: flex; align-items: center; gap: 10px; }
+        
+        .panel { 
+            background: var(--card); 
+            border-radius: var(--radius-md); 
+            padding: 24px; 
+            margin-bottom: 20px; 
+            border: 1px solid rgba(0,0,0,0.02); 
+        }
+        
+        .input-group { position: relative; margin-bottom: 12px; }
+        .input-group i { position: absolute; left: 16px; top: 16px; color: var(--text-sub); width: 18px; }
+        
+        input, select { 
+            width: 100%; 
+            padding: 16px 16px 16px 48px; 
+            border: 1px solid #E5E5EA; 
+            border-radius: 16px; 
+            font-size: 1rem; 
+            background: #F9F9F9; 
+            font-weight: 500; 
+            outline: none;
+        }
+
+        .btn-action { 
+            width: 100%; 
+            padding: 20px; 
+            border-radius: 18px; 
+            border: none; 
+            font-weight: 700; 
+            font-size: 1rem; 
+            background: var(--primary); 
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 12px; 
+        }
+        .btn-action:active { transform: scale(0.98); }
+        
+        .bank-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px; 
+            background: white; 
+            border-radius: 20px; 
+            margin-bottom: 12px; 
+            border: 1px solid rgba(0,0,0,0.02); 
+        }
+        
+        .nav-bar { 
+            position: fixed; 
+            bottom: 0; left: 0; right: 0; 
+            background: rgba(255,255,255,0.9); 
+            backdrop-filter: blur(20px); 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 16px 10px calc(24px + env(safe-area-inset-bottom)); 
+            border-top: 0.5px solid var(--border); 
+            z-index: 1000; 
+        }
+        .nav-btn { background: none; border: none; color: var(--text-sub); font-size: 0.65rem; font-weight: 700; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .nav-btn.active { color: var(--primary); }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="header">
+            <h1 id="page-title">Início</h1>
+            <img src="logo.png" alt="Logo" class="logo-img" onerror="this.style.display='none'">
+        </header>
+
+        <div id="tab-home" class="view">
+            <div class="main-card">
+                <span id="alert-reserva" class="badge-alert hidden">EMERGÊNCIA ATIVA</span>
+                <span>Saldo Disponível</span>
+                <h2 id="txt-saldo-livre">R$ 0,00</h2>
+                <div class="sub-info">
+                    <div><span>Ganhos</span><p id="txt-salario">R$ 0,00</p></div>
+                    <div><span>Despesas</span><p id="txt-comprometido" style="color: #FF6B6B;">R$ 0,00</p></div>
+                </div>
+            </div>
+
+            <div class="reserve-mini-card" onclick="switchTab('banks', 'Bancos')">
+                <div><span>Fundo de Reserva</span><h3 id="txt-reserva-total">R$ 0,00</h3></div>
+                <div class="reserve-icon-bg"><i data-lucide="shield" size="20"></i></div>
+            </div>
+
+            <p class="section-title"><i data-lucide="plus" size="18"></i> Lançamento Rápido</p>
+            <div class="panel">
+                <div class="input-group"><i data-lucide="tag"></i><input type="text" id="add-nome" placeholder="Descrição"></div>
+                <div style="display: flex; gap: 12px;">
+                    <div class="input-group" style="flex: 1;"><i data-lucide="hash"></i><input type="number" id="add-valor" placeholder="Valor"></div>
+                    <div class="input-group" style="flex: 1.2;"><i data-lucide="credit-card"></i><select id="add-metodo"></select></div>
+                </div>
+                
+                <div class="input-group">
+                    <i data-lucide="repeat"></i>
+                    <select id="add-num-parcelas" style="padding-left: 48px;">
+                        <option value="1">À vista / 1x</option>
+                        <option value="2">2x</option><option value="3">3x</option><option value="4">4x</option>
+                        <option value="6">6x</option><option value="10">10x</option><option value="12">12x</option>
+                    </select>
+                </div>
+
+                <button class="btn-action" onclick="lancarGasto()">Registrar</button>
+            </div>
+        </div>
+
+        <div id="tab-banks" class="view hidden">
+            <p class="section-title"><i data-lucide="landmark" size="18"></i> Balancete Bancário</p>
+            <div id="lista-detalhe-bancos"></div>
+
+            <p class="section-title"><i data-lucide="shield-check" size="18"></i> Reserva de Emergência</p>
+            <div class="panel" style="background: var(--reserve); color: white;">
+                <div style="margin-bottom: 24px;">
+                    <span style="font-size: 0.7rem; font-weight: 700; opacity: 0.5;">MONTANTE PROTEGIDO</span>
+                    <h2 id="txt-reserva-balancete" style="font-size: 2.4rem; font-weight: 800; letter-spacing: -1.5px;">R$ 0,00</h2>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="add-reserva-valor" placeholder="R$ Valor do Aporte" style="padding-left: 15px; background: rgba(255,255,255,0.1); border: none; color: white;">
+                    <button class="btn-action" style="width: 80px; background: white; color: black;" onclick="aportarReserva()"><i data-lucide="plus"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-projection" class="view hidden">
+            <p class="section-title"><i data-lucide="calendar-days" size="18"></i> Fluxo Futuro</p>
+            <div id="lista-meses-projecao"></div>
+        </div>
+
+        <div id="tab-config" class="view hidden">
+            <p class="section-title"><i data-lucide="settings" size="18"></i> Ajustes do Sistema</p>
+            <div class="panel">
+                <input type="number" id="cfg-salario" placeholder="Salário Mensal" style="padding-left:15px; margin-bottom:12px;">
+                <input type="number" id="cfg-va" placeholder="VA Mensal" style="padding-left:15px;">
+                <button class="btn-action" onclick="salvarRendas()">Salvar Configurações</button>
+            </div>
+            <p class="section-title"><i data-lucide="plus-circle" size="18"></i> Novo Cartão</p>
+            <div class="panel">
+                <input type="text" id="card-nome" placeholder="Nome do Banco" style="padding-left:15px; margin-bottom:12px;">
+                <input type="number" id="card-dia" placeholder="Dia Fechamento" style="padding-left:15px;">
+                <button class="btn-action" onclick="addCartao()">Cadastrar Cartão</button>
+            </div>
+            <button onclick="zerarTudo()" style="width:100%; color:var(--danger-text); padding:40px; border:none; background:none; font-weight:700; font-size: 0.8rem;">RESETE TOTAL DO APP</button>
+        </div>
+    </div>
+
+    <nav class="nav-bar">
+        <button class="nav-btn active" onclick="switchTab('home', 'Início')"><i data-lucide="wallet"></i>Início</button>
+        <button class="nav-btn" onclick="switchTab('banks', 'Bancos')"><i data-lucide="landmark"></i>Bancos</button>
+        <button class="nav-btn" onclick="switchTab('projection', 'Projeção')"><i data-lucide="trending-up"></i>Projeção</button>
+        <button class="nav-btn" onclick="switchTab('config', 'Ajustes')"><i data-lucide="sliders"></i>Ajustes</button>
+    </nav>
+
+<script>
+    let db = { salario: 0, va: 0, cartoes: [], fixos: [], compras: [], reserva: 0 };
+    const mesesStr = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
+    window.onload = () => {
+        const saved = localStorage.getItem('fluxo_v14_db');
+        if(saved) db = JSON.parse(saved);
+        if(db.reserva === undefined) db.reserva = 0;
+        document.getElementById('cfg-salario').value = db.salario || '';
+        document.getElementById('cfg-va').value = db.va || '';
+        atualizarInterface();
+    };
+
+    function switchTab(t, title) {
+        document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-'+t).classList.remove('hidden');
+        document.getElementById('page-title').innerText = title;
+        if(event) event.currentTarget.classList.add('active');
+        lucide.createIcons();
+    }
+
+    function aportarReserva() {
+        const val = parseFloat(document.getElementById('add-reserva-valor').value) || 0;
+        if(val > 0) {
+            db.reserva += val;
+            document.getElementById('add-reserva-valor').value = '';
+            save();
+        }
+    }
+
+    function addCartao() {
+        const nome = document.getElementById('card-nome').value;
+        const dia = parseInt(document.getElementById('card-dia').value);
+        if(!nome || !dia) return;
+        db.cartoes.push({id: 'c'+Date.now(), nome, dia, faturas: []});
+        save();
+    }
+
+    function lancarGasto() {
+        const nome = document.getElementById('add-nome').value;
+        const valorTotal = parseFloat(document.getElementById('add-valor').value);
+        const metodo = document.getElementById('add-metodo').value;
+        const numParcelas = parseInt(document.getElementById('add-num-parcelas').value);
+
+        if(!nome || !valorTotal) return;
+
+        const valorParcela = valorTotal / numParcelas;
+        const hoje = new Date();
+
+        for(let i=0; i < numParcelas; i++) {
+            const dataParcela = new Date(hoje.getFullYear(), hoje.getMonth() + i, 1);
+            db.compras.push({
+                id: Date.now() + i,
+                nome: numParcelas > 1 ? `${nome} (${i+1}/${numParcelas})` : nome,
+                valor: valorParcela,
+                metodo,
+                data: dataParcela.toISOString()
+            });
+        }
+        save();
+        document.getElementById('add-nome').value = '';
+        document.getElementById('add-valor').value = '';
+    }
+
+    function salvarRendas() {
+        db.salario = parseFloat(document.getElementById('cfg-salario').value) || 0;
+        db.va = parseFloat(document.getElementById('cfg-va').value) || 0;
+        save();
+        alert("Configurações salvas!");
+    }
+
+    function save() {
+        localStorage.setItem('fluxo_v14_db', JSON.stringify(db));
+        atualizarInterface();
+    }
+
+    function atualizarInterface() {
+        const hoje = new Date();
+        const mAt = hoje.getMonth();
+        const aAt = hoje.getFullYear();
+        const proj = {};
+        const bancosDet = {};
+
+        for(let i=0; i<12; i++) {
+            const d = new Date(aAt, mAt + i, 1);
+            const ch = `${d.getMonth()}-${d.getFullYear()}`;
+            proj[ch] = { total: 0, pix: 0, cartao: 0, va: 0 };
+        }
+
+        db.cartoes.forEach(c => { bancosDet[c.id] = { nome: c.nome, atual: 0 }; });
+
+        db.compras.forEach(c => {
+            const dc = new Date(c.data);
+            const ch = `${dc.getMonth()}-${dc.getFullYear()}`;
+            if(proj[ch]) {
+                if(c.metodo === 'va') proj[ch].va += c.valor;
+                else if(c.metodo === 'pix') proj[ch].pix += c.valor;
+                else {
+                    proj[ch].cartao += c.valor;
+                    if(ch === `${mAt}-${aAt}` && bancosDet[c.metodo]) bancosDet[c.metodo].atual += c.valor;
+                }
+            }
+        });
+
+        const chAt = `${mAt}-${aAt}`;
+        const totalGastosMês = proj[chAt].pix + proj[chAt].cartao;
+        let saldoFinal = db.salario - totalGastosMês;
+        
+        let reservaExibicao = db.reserva;
+        const alertReserva = document.getElementById('alert-reserva');
+        
+        if(saldoFinal < 0) {
+            const deficit = Math.abs(saldoFinal);
+            if(reservaExibicao >= deficit) {
+                reservaExibicao -= deficit;
+                saldoFinal = 0;
+                alertReserva.classList.remove('hidden');
+            } else {
+                saldoFinal = -(deficit - reservaExibicao);
+                reservaExibicao = 0;
+                alertReserva.classList.remove('hidden');
+            }
+        } else {
+            alertReserva.classList.add('hidden');
+        }
+
+        document.getElementById('txt-saldo-livre').innerText = format(saldoFinal);
+        document.getElementById('txt-salario').innerText = format(db.salario);
+        document.getElementById('txt-comprometido').innerText = format(totalGastosMês);
+        document.getElementById('txt-reserva-total').innerText = format(reservaExibicao);
+        document.getElementById('txt-reserva-balancete').innerText = format(reservaExibicao);
+
+        document.getElementById('lista-detalhe-bancos').innerHTML = Object.values(bancosDet).map(b => `
+            <div class="bank-item">
+                <div><h4>${b.nome}</h4><p>Extrato Parcial</p></div>
+                <div style="text-align:right"><b style="font-size:1.1rem">${format(b.atual)}</b></div>
+            </div>
+        `).join('');
+
+        document.getElementById('lista-meses-projecao').innerHTML = Object.keys(proj).map(ch => {
+            const [m, a] = ch.split('-');
+            const totalM = proj[ch].pix + proj[ch].cartao;
+            const sbr = db.salario - totalM;
+            return `<div class="panel" style="display:flex; justify-content:space-between; align-items:center;">
+                <div><span style="color:var(--accent); font-weight:800; font-size:0.7rem;">${mesesStr[m]} ${a}</span><h4 style="font-size:1.2rem; font-weight:800; letter-spacing: -0.5px;">${format(totalM)}</h4></div>
+                <div style="text-align:right"><span style="font-size:0.6rem; font-weight:700; color:var(--text-sub);">SOBRA</span><b style="color:${sbr < 0 ? 'var(--danger-text)' : 'var(--va)'}">${format(sbr)}</b></div>
+            </div>`;
+        }).join('');
+
+        const sel = document.getElementById('add-metodo');
+        sel.innerHTML = '<option value="pix">Pix / Débito</option><option value="va">V.A.</option>' + db.cartoes.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
+        
+        lucide.createIcons();
+    }
+
+    function format(v) { return v.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'}); }
+    function zerarTudo() { if(confirm("Deseja apagar todos os dados do sistema?")) { localStorage.clear(); location.reload(); } }
+</script>
+</body>
+</html>
